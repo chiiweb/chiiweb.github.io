@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>✨ chiikawa dreamsite ✨</title>
-  <link rel="icon" href="https://i.pinimg.com/736x/7b/d7/ab/7bd7abb603e35feb41528cb3af4534f1.jpg" type="image/jpeg" />
+  <link rel="icon" href="chiikawa-chef-removebg-preview.png" type="image/png" />
 
   <style>
     :root {
@@ -44,6 +44,9 @@
     body.dark section {
       background: #2e2e4d;
     }
+    body.dark .card, body.dark .gallery-item, body.dark .game-item {
+      background: #3a3a5a;
+    }
     header {
       position: sticky;
       top: 0;
@@ -56,11 +59,18 @@
       flex-direction: column;
       align-items: center;
     }
+    body.dark header {
+      background: rgba(46, 46, 77, 0.9);
+      color: white;
+    }
     header h1 {
       font-size: clamp(1.8rem, 5vw, 2.2rem);
       color: var(--primary-text);
       animation: bounce 2s infinite;
       margin-bottom: 0.8rem;
+    }
+    body.dark header h1 {
+      color: #ffb6c1;
     }
     @keyframes bounce {
       0%,100% {transform: translateY(0);}
@@ -188,6 +198,11 @@
       border-radius: 50%;
       border: none;
       background: #ffb6c1;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      z-index: 100;
+    }
+    #themeToggle:hover {
+      transform: scale(1.1);
     }
     #muteBtn, #pauseBtn {
       width: 40px;
@@ -203,6 +218,7 @@
     }
     #muteBtn:hover, #pauseBtn:hover {
       background: var(--button-hover);
+      color: white;
     }
     .controls {
       display: flex;
@@ -212,32 +228,30 @@
     }
     #volumeSlider {
       width: 100px;
-      height: 30px;
+      height: 8px;
       -webkit-appearance: none;
       appearance: none;
       background: #ffd6e8;
       border-radius: 15px;
       outline: none;
       cursor: pointer;
-      vertical-align: middle;
     }
     #volumeSlider::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
       width: 20px;
       height: 20px;
-      background: url('https://i.pinimg.com/736x/2f/a6/38/2fa63889fb076947de294c8348e836bf.jpg') no-repeat center;
-      background-size: cover;
+      background: #ffb6c1;
       border-radius: 50%;
       cursor: pointer;
     }
     #volumeSlider::-moz-range-thumb {
       width: 20px;
       height: 20px;
-      background: url('https://i.pinimg.com/736x/2f/a6/38/2fa63889fb076947de294c8348e836bf.jpg') no-repeat center;
-      background-size: cover;
+      background: #ffb6c1;
       border-radius: 50%;
       cursor: pointer;
+      border: none;
     }
     .floating-up-img {
       position: fixed;
@@ -248,9 +262,6 @@
       z-index: 1000;
       border-radius: 12px;
       filter: drop-shadow(0 0 3px #ffb6c1);
-    }
-    .floating-up-img.hidden {
-      display: none;
     }
     .description-text {
       text-align: center;
@@ -317,7 +328,7 @@
       cursor: not-allowed;
       box-shadow: none;
     }
-    .game-button:hover:enabled {
+    .game-button:hover:not(:disabled) {
       background: var(--button-hover);
       box-shadow: 0 8px 25px rgba(255,105,180,0.9);
     }
@@ -338,15 +349,19 @@
       justify-content: center;
       font-size: 1.5rem;
       cursor: pointer;
-      transition: all 0cza.3s ease;
+      transition: all 0.3s ease;
+      border: 2px solid #ff69b4;
+    }
+    .memory-card:hover {
+      transform: scale(1.05);
     }
     .memory-card.flipped {
       background: #fff0f8;
-      transform: rotateY(180deg);
     }
     .memory-card.matched {
       background: #90EE90;
       cursor: default;
+      border-color: #228B22;
     }
     .quiz-option {
       background: #fff0f8;
@@ -364,14 +379,22 @@
     .quiz-option.correct {
       background: #90EE90;
       color: #006400;
+      border-color: #228B22;
     }
     .quiz-option.wrong {
       background: #FFB6C1;
       color: #8B0000;
+      border-color: #DC143C;
     }
-    #clickTarget img {
+    #clickTarget {
+      position: absolute;
       width: 40px;
       height: 40px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    #clickTarget img {
+      width: 100%;
       border-radius: 8px;
       border: 2px solid #ffb6c1;
     }
@@ -383,47 +406,93 @@
       margin: 1rem auto;
     }
     .puzzle-piece {
-      width: 100px;
-      height: 100px;
+      width: 95px;
+      height: 95px;
       background-size: 300px 300px;
       border-radius: 8px;
       cursor: pointer;
       border: 2px solid #ffb6c1;
+      transition: transform 0.2s ease;
+    }
+    .puzzle-piece:hover {
+      transform: scale(1.05);
     }
     .puzzle-piece.correct {
       border: 2px solid #90EE90;
     }
     .puzzle-piece.empty {
-      background: #ccc;
-      border: 2px solid #ccc;
+      background: #e0e0e0;
+      border: 2px dashed #ccc;
     }
     .catch-container {
-      position.ScenegraphNode2D relative;
+      position: relative;
       height: 200px;
       background: #fff0f8;
       border-radius: 12px;
       margin: 1rem 0;
       overflow: hidden;
+      border: 2px solid #ffb6c1;
     }
     .catch-character {
       position: absolute;
       width: 40px;
       height: 40px;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: transform 0.2s ease;
+    }
+    .catch-character:hover {
+      transform: scale(1.2);
     }
     .catch-character img {
       width: 100%;
       border-radius: 8px;
       border: 2px solid #ffb6c1;
     }
-    .catch-score {
+    .catch-score, .click-game-container {
       margin: 1rem 0;
       text-align: center;
+      font-weight: bold;
+      color: var(--primary-text);
+    }
+    .click-game-area {
+      position: relative;
+      height: 150px;
+      background: #fff0f8;
+      border-radius: 12px;
+      margin: 1rem 0;
+      border: 2px solid #ffb6c1;
+    }
+    #quizQuestion {
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      color: var(--primary-text);
+    }
+    .music-notice {
+      position: fixed;
+      bottom: 100px;
+      right: 30px;
+      background: #ffb6c1;
+      color: white;
+      padding: 1rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      z-index: 99;
+      animation: fadeInOut 3s ease-in-out;
+      pointer-events: none;
+    }
+    @keyframes fadeInOut {
+      0%, 100% { opacity: 0; }
+      10%, 90% { opacity: 1; }
     }
     @media (max-width: 600px) {
       header {
         padding: 1rem 0.5rem;
+      }
+      .controls {
+        position: relative;
+        left: 0;
+        margin-bottom: 0.5rem;
       }
       nav {
         gap: 0.5rem;
@@ -441,11 +510,7 @@
         gap: 1.5rem;
       }
       .card, .gallery-item, .game-item {
-        max-width: 200px;
-      }
-      .card img, .gallery-item img {
-        max-width: 180px;
-        height: 180px;
+        max-width: 100%;
       }
     }
   </style>
@@ -453,13 +518,13 @@
 <body>
 <header>
   <div class="controls">
-    <button id="muteBtn" title="mute music">🔇</button>
+    <button id="muteBtn" title="mute music">🔊</button>
     <button id="pauseBtn" title="pause music">⏸️</button>
     <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5">
   </div>
   <h1>🌟 welcome to chiikawa dreamland! 🌟</h1>
   <nav>
-    <a href="#description">about</a>
+    <a href="#about">about</a>
     <a href="#stars">stars</a>
     <a href="#gallery">gallery</a>
     <a href="#games">games</a>
@@ -522,17 +587,17 @@
     <div class="card">
       <img src="https://i.pinimg.com/736x/f3/dd/ae/f3ddae1f36e375791db755a0ac5a7f79.jpg" alt="pochette" />
       <h3>pochette no-yoroi-san</h3>
-      <p>pochette no-yoroi-san, gentle knight, loves cute things, sells pajamas. 🧵✨</p>
+      <p>gentle knight, loves cute things, sells pajamas 🧵✨</p>
     </div>
-        <div class="card">
+    <div class="card">
       <img src="https://i.pinimg.com/1200x/5f/a5/dc/5fa5dc9f8524d6456c50e429faa8d39c.jpg" alt="labor" />
       <h3>labor no yori-san</h3>
-      <p>labor no yori-san assigns work, tangled in momonga’s mischief. 📋😅</p>
+      <p>assigns work, tangled in momonga's mischief 📋😅</p>
     </div>
-        <div class="card">
+    <div class="card">
       <img src="https://pbs.twimg.com/profile_images/1914779776247537664/ei13if1__200x200.jpg" alt="ramen" />
       <h3>ramen no yoroi-san</h3>
-      <p>ramen no yoroi-san runs “rou” ramen shop; shisa admires him. 🍜❤️</p>
+      <p>runs "rou" ramen shop; shisa admires him 🍜❤️</p>
     </div>
   </div>
 </section>
@@ -575,16 +640,7 @@
     <div class="game-item">
       <h3>🧠 memory match game</h3>
       <p>match the chiikawa friends! flip the cards to find pairs 🃏</p>
-      <div class="memory-game" id="memoryGame">
-        <div class="memory-card" data-card="🐰"></div>
-        <div class="memory-card" data-card="🐱"></div>
-        <div class="memory-card" data-card="🦦"></div>
-        <div class="memory-card" data-card="🦀"></div>
-        <div class="memory-card" data-card="🐰"></div>
-        <div class="memory-card" data-card="🐱"></div>
-        <div class="memory-card" data-card="🦦"></div>
-        <div class="memory-card" data-card="🦀"></div>
-      </div>
+      <div class="memory-game" id="memoryGame"></div>
       <button class="game-button" onclick="shuffleMemoryGame()">new game! 🎲</button>
     </div>
     
@@ -599,11 +655,8 @@
       <h3>❓ chiikawa quiz</h3>
       <p>test your knowledge about chiikawa and friends! 🧭</p>
       <div id="quizContainer">
-        <div id="quizQuestion">What sound does Chiikawa make?</div>
-        <div class="quiz-option" data-index="0">woof woof!</div>
-        <div class="quiz-option" data-index="1">meow meow!</div>
-        <div class="quiz-option" data-index="2">iya!</div>
-        <div class="quiz-option" data-index="3">ribbit ribbit!</div>
+        <div id="quizQuestion"></div>
+        <div id="quizOptions"></div>
       </div>
       <button class="game-button" id="nextQuestionBtn" onclick="nextQuestion()" disabled>next question! ❓</button>
     </div>
@@ -611,13 +664,13 @@
     <div class="game-item">
       <h3>🎯 click the chiikawa</h3>
       <p>click on chiikawa as fast as you can! how many can you catch? ⚡</p>
-      <div style="position: relative; height: 150px; background: #fff0f8; border-radius: 12px; margin: 1rem 0;">
-        <div id="clickTarget" style="position: absolute; cursor: pointer; transition: all 0.3s ease;">
+      <div class="click-game-area">
+        <div id="clickTarget" style="display:none;">
           <img src="https://i.pinimg.com/736x/9e/d2/57/9ed25718190fc277a34354760c69a021.jpg" alt="chiikawa" />
         </div>
       </div>
       <div class="catch-score">score: <span id="clickScore">0</span></div>
-      <button class="game-button" onclick="startClickGame()">start game! 🎯</button>
+      <button class="game-button" id="clickGameBtn" onclick="startClickGame()">start game! 🎯</button>
     </div>
     
     <div class="game-item">
@@ -625,7 +678,7 @@
       <p>catch falling chiikawa characters by clicking them! 🍬</p>
       <div class="catch-container" id="catchContainer"></div>
       <div class="catch-score">caught: <span id="catchScore">0</span></div>
-      <button class="game-button" onclick="startCatchGame()">start catching! 🍬</button>
+      <button class="game-button" id="catchGameBtn" onclick="startCatchGame()">start catching! 🍬</button>
     </div>
   </div>
 </section>
@@ -684,44 +737,45 @@
     img.src = floatImgs[Math.floor(Math.random() * floatImgs.length)];
     img.className = "floating-up-img";
     img.style.left = Math.random() * 100 + "vw";
-    img.style.top = (Math.random() * 100 + 100) + "vh";
+    img.style.top = "100vh";
     document.body.appendChild(img);
-    img.animate([{ transform: "translateY(0)" }, { transform: "translateY(-200vh)" }], {
+    img.animate([{ transform: "translateY(0)" }, { transform: "translateY(-120vh)" }], {
       duration: 4000 + Math.random() * 2000,
       easing: "linear"
     }).onfinish = () => img.remove();
   }
 
   function startFloating() {
-    floatInterval = setInterval(floatCuties, 1000);
+    floatInterval = setInterval(floatCuties, 1500);
   }
 
   function stopFloating() {
     clearInterval(floatInterval);
-    document.querySelectorAll('.floating-up-img').forEach(img => img.classList.add('hidden'));
-    setTimeout(() => {
-      document.querySelectorAll('.floating-up-img').forEach(img => img.remove());
-      startFloating();
-    }, 5000);
   }
 
   startFloating();
 
   // Music system
   const audioTracks = [
-    new Audio("https://vgmsite.com/soundtracks/kirby-the-crystal-shards/eqfqqetp/62.%20Unused%20%5B%22Friends%203%22%20from%20Kirby%27s%20Dream%20Land%203%5D.mp3"),
-    new Audio("https://vgmsite.com/soundtracks/rainbow-islands-turbografx-16/daygbfpv/02.%20%5BNormal%5D%20Main%20Theme.mp3")
+    new Audio("https://cdn.pixabay.com/audio/2022/03/10/audio_4c91e06ed3.mp3"),
+    new Audio("https://cdn.pixabay.com/audio/2022/05/27/audio_1808fbf07a.mp3")
   ];
   let currentTrack = 0;
   let audio = audioTracks[currentTrack];
   audio.loop = false;
   audio.volume = 0.5;
+  let hasInteracted = false;
 
-  window.addEventListener('load', () => {
-    audio.play().catch(e => {
-      console.log('Auto-play blocked by browser policy');
-    });
-  });
+  function tryPlayAudio() {
+    if (!hasInteracted) {
+      hasInteracted = true;
+      audio.play().catch(e => {
+        console.log('Music will play after interaction');
+      });
+    }
+  }
+
+  document.addEventListener('click', tryPlayAudio, { once: true });
 
   audio.addEventListener('ended', () => {
     currentTrack = (currentTrack + 1) % audioTracks.length;
@@ -734,7 +788,6 @@
     if (audio.muted) {
       audio.muted = false;
       document.getElementById('muteBtn').textContent = '🔊';
-      document.getElementById('volumeSlider').value = audio.volume;
     } else {
       audio.muted = true;
       document.getElementById('muteBtn').textContent = '🔇';
@@ -751,25 +804,28 @@
     }
   });
 
-  document.getElementById('volumeSlider').addEventListener('input', () => {
-    audio.volume = document.getElementById('volumeSlider').value;
-    audio.muted = false;
-    document.getElementById('muteBtn').textContent = '🔊';
+  document.getElementById('volumeSlider').addEventListener('input', (e) => {
+    audio.volume = e.target.value;
+    if (audio.muted && e.target.value > 0) {
+      audio.muted = false;
+      document.getElementById('muteBtn').textContent = '🔊';
+    }
   });
 
-  // Game Functions
+  // Game Variables
   let memoryCards = [];
   let flippedCards = [];
   let clickScore = 0;
   let clickGameActive = false;
+  let clickGameTimer;
   let currentQuestionIndex = 0;
   let puzzlePieces = [];
   let catchScore = 0;
   let catchGameActive = false;
+  let catchGameTimer;
   let emptyPosition = 8;
 
   const quizQuestions = [
-    // Easy
     {
       question: "What sound does Chiikawa make?",
       options: ["woof woof!", "meow meow!", "iya!", "ribbit ribbit!"],
@@ -785,7 +841,6 @@
       options: ["cat", "dog", "rabbit", "bear"],
       correct: 2
     },
-    // Medium
     {
       question: "What is Hachiware known for loving?",
       options: ["ramen", "singing", "napping", "dancing"],
@@ -806,7 +861,6 @@
       options: ["sushi", "ramen", "cake", "pizza"],
       correct: 1
     },
-    // Hard
     {
       question: "In which year was the Chiikawa manga first published?",
       options: ["2018", "2020", "2022", "2016"],
@@ -818,27 +872,28 @@
       correct: 1
     },
     {
-      question: "What is the name of the forest where Chiikawa and friends live?",
-      options: ["Kawaii Forest", "Chiikawa Forest", "Happy Woods", "Glitter Grove"],
-      correct: 1
+      question: "What type of creature is Momonga?",
+      options: ["squirrel", "chipmunk", "hamster", "mouse"],
+      correct: 0
     }
   ];
 
   // Memory Game
   function shuffleMemoryGame() {
-    const cards = document.querySelectorAll('.memory-card');
+    const container = document.getElementById('memoryGame');
+    container.innerHTML = '';
     const emojis = ['🐰', '🐱', '🦦', '🦀', '🐰', '🐱', '🦦', '🦀'];
     const shuffled = emojis.sort(() => Math.random() - 0.5);
     memoryCards = [];
     flippedCards = [];
 
-    cards.forEach((card, index) => {
-      card.textContent = '';
-      card.classList.remove('flipped', 'matched');
-      card.dataset.card = shuffled[index];
-      card.style.pointerEvents = 'auto';
-      card.removeEventListener('click', flipCard);
+    shuffled.forEach((emoji, index) => {
+      const card = document.createElement('div');
+      card.className = 'memory-card';
+      card.dataset.card = emoji;
+      card.dataset.index = index;
       card.addEventListener('click', () => flipCard(card));
+      container.appendChild(card);
       memoryCards.push(card);
     });
   }
@@ -855,12 +910,12 @@
     if (flippedCards.length === 2) {
       const [card1, card2] = flippedCards;
       if (card1.dataset.card === card2.dataset.card) {
-        card1.classList.add('matched');
-        card2.classList.add('matched');
-        card1.style.pointerEvents = 'none';
-        card2.style.pointerEvents = 'none';
-        flippedCards = [];
-        checkMemoryGameComplete();
+        setTimeout(() => {
+          card1.classList.add('matched');
+          card2.classList.add('matched');
+          flippedCards = [];
+          checkMemoryGameComplete();
+        }, 500);
       } else {
         setTimeout(() => {
           card1.classList.remove('flipped');
@@ -874,9 +929,9 @@
   }
 
   function checkMemoryGameComplete() {
-    const allMatched = Array.from(document.querySelectorAll('.memory-card')).every(card => card.classList.contains('matched'));
+    const allMatched = memoryCards.every(card => card.classList.contains('matched'));
     if (allMatched) {
-      setTimeout(() => alert('Memory game completed! 🎉'), 500);
+      setTimeout(() => alert('Memory game completed! You matched all pairs! 🎉'), 500);
     }
   }
 
@@ -885,7 +940,12 @@
     const container = document.getElementById('puzzleContainer');
     container.innerHTML = '';
     const correctOrder = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-    const shuffledOrder = [...correctOrder].sort(() => Math.random() - 0.5);
+    let shuffledOrder = [...correctOrder];
+    
+    do {
+      shuffledOrder = shuffledOrder.sort(() => Math.random() - 0.5);
+    } while (isPuzzleSolved(shuffledOrder));
+    
     puzzlePieces = [];
     emptyPosition = shuffledOrder.indexOf(8);
 
@@ -894,112 +954,117 @@
       piece.className = 'puzzle-piece';
       piece.dataset.position = index;
       piece.dataset.correct = position;
+      
       if (position !== 8) {
         piece.style.backgroundImage = 'url(https://i.pinimg.com/736x/11/d2/0f/11d20fb3de158acfeb1a297eb70b6f98.jpg)';
         piece.style.backgroundPosition = `${-(position % 3) * 100}px ${-Math.floor(position / 3) * 100}px`;
       } else {
         piece.classList.add('empty');
       }
-      piece.addEventListener('click', () => swapPuzzlePiece(piece));
+      
+      piece.addEventListener('click', () => swapPuzzlePiece(index));
       container.appendChild(piece);
       puzzlePieces.push(piece);
     });
-
-    checkPuzzleComplete();
   }
 
-  function swapPuzzlePiece(piece) {
-    const pieceIndex = parseInt(piece.dataset.position);
+  function isPuzzleSolved(order) {
+    return order.every((val, idx) => val === idx);
+  }
+
+  function swapPuzzlePiece(pieceIndex) {
     const validMoves = {
       0: [1, 3], 1: [0, 2, 4], 2: [1, 5],
       3: [0, 4, 6], 4: [1, 3, 5, 7], 5: [2, 4, 8],
       6: [3, 7], 7: [4, 6, 8], 8: [5, 7]
     };
 
-    if (validMoves[pieceIndex].includes(emptyPosition)) {
-      const emptyPiece = puzzlePieces[emptyPosition];
-      const piecePos = piece.dataset.correct;
-      const emptyPos = emptyPiece.dataset.correct;
-
-      piece.dataset.correct = emptyPos;
-      emptyPiece.dataset.correct = piecePos;
-
-      piece.dataset.position = emptyPosition;
-      emptyPiece.dataset.position = pieceIndex;
-
-      if (piecePos !== '8') {
-        piece.style.backgroundImage = 'url(https://i.pinimg.com/736x/11/d2/0f/11d20fb3de158acfeb1a297eb70b6f98.jpg)';
-        piece.style.backgroundPosition = `${-(parseInt(emptyPos) % 3) * 100}px ${-Math.floor(parseInt(emptyPos) / 3) * 100}px`;
-      } else {
-        piece.classList.add('empty');
-        piece.style.backgroundImage = 'none';
-      }
-
-      if (emptyPos !== '8') {
-        emptyPiece.style.backgroundImage = 'url(https://i.pinimg.com/736x/11/d2/0f/11d20fb3de158acfeb1a297eb70b6f98.jpg)';
-        emptyPiece.style.backgroundPosition = `${-(parseInt(piecePos) % 3) * 100}px ${-Math.floor(parseInt(piecePos) / 3) * 100}px`;
-        emptyPiece.classList.remove('empty');
-      } else {
-        emptyPiece.classList.add('empty');
-        emptyPiece.style.backgroundImage = 'none';
-      }
-
-      emptyPosition = pieceIndex;
-      checkPuzzleComplete();
+    if (!validMoves[pieceIndex].includes(emptyPosition)) {
+      return;
     }
+
+    const piece = puzzlePieces[pieceIndex];
+    const emptyPiece = puzzlePieces[emptyPosition];
+    
+    const tempCorrect = piece.dataset.correct;
+    piece.dataset.correct = emptyPiece.dataset.correct;
+    emptyPiece.dataset.correct = tempCorrect;
+
+    if (tempCorrect !== '8') {
+      const pos = parseInt(tempCorrect);
+      emptyPiece.style.backgroundImage = 'url(https://i.pinimg.com/736x/11/d2/0f/11d20fb3de158acfeb1a297eb70b6f98.jpg)';
+      emptyPiece.style.backgroundPosition = `${-(pos % 3) * 100}px ${-Math.floor(pos / 3) * 100}px`;
+      emptyPiece.classList.remove('empty');
+    }
+
+    piece.style.backgroundImage = 'none';
+    piece.classList.add('empty');
+    
+    emptyPosition = pieceIndex;
+    checkPuzzleComplete();
   }
 
   function checkPuzzleComplete() {
-    const pieces = document.querySelectorAll('.puzzle-piece');
-    let isComplete = true;
-    pieces.forEach(piece => {
-      if (piece.dataset.position !== piece.dataset.correct) {
-        isComplete = false;
-      }
-      piece.classList.remove('correct');
-    });
+    const isComplete = puzzlePieces.every(piece => 
+      piece.dataset.position === piece.dataset.correct
+    );
+    
     if (isComplete) {
-      pieces.forEach(piece => piece.classList.add('correct'));
-      setTimeout(() => alert('Puzzle completed! 🎉'), 500);
+      puzzlePieces.forEach(piece => {
+        if (!piece.classList.contains('empty')) {
+          piece.classList.add('correct');
+        }
+      });
+      setTimeout(() => alert('Puzzle completed! Amazing work! 🎉🧩'), 500);
     }
   }
 
   // Quiz Game
-  function checkAnswer(option) {
-    const options = document.querySelectorAll('.quiz-option');
-    const selectedIndex = parseInt(option.dataset.index);
-    const correctIndex = quizQuestions[currentQuestionIndex].correct;
+  function loadQuestion() {
+    const question = quizQuestions[currentQuestionIndex];
+    document.getElementById('quizQuestion').textContent = question.question;
+    
+    const optionsContainer = document.getElementById('quizOptions');
+    optionsContainer.innerHTML = '';
+    
+    question.options.forEach((option, index) => {
+      const optionDiv = document.createElement('div');
+      optionDiv.className = 'quiz-option';
+      optionDiv.textContent = option;
+      optionDiv.dataset.index = index;
+      optionDiv.addEventListener('click', () => checkAnswer(optionDiv, index));
+      optionsContainer.appendChild(optionDiv);
+    });
+    
+    document.getElementById('nextQuestionBtn').disabled = true;
+  }
 
+  function checkAnswer(optionElement, selectedIndex) {
+    const question = quizQuestions[currentQuestionIndex];
+    const options = document.querySelectorAll('.quiz-option');
+    
     options.forEach(opt => opt.style.pointerEvents = 'none');
 
-    if (selectedIndex === correctIndex) {
-      option.classList.add('correct');
-      document.getElementById('nextQuestionBtn').disabled = false;
+    if (selectedIndex === question.correct) {
+      optionElement.classList.add('correct');
     } else {
-      option.classList.add('wrong');
+      optionElement.classList.add('wrong');
+      options[question.correct].classList.add('correct');
     }
-
-    setTimeout(() => {
-      options.forEach(opt => {
-        opt.classList.remove('correct', 'wrong');
-        opt.style.pointerEvents = 'auto';
-      });
-    }, 1500);
+    
+    document.getElementById('nextQuestionBtn').disabled = false;
   }
 
   function nextQuestion() {
     currentQuestionIndex = (currentQuestionIndex + 1) % quizQuestions.length;
-    const question = quizQuestions[currentQuestionIndex];
-    document.getElementById('quizQuestion').textContent = question.question;
-
+    
     const options = document.querySelectorAll('.quiz-option');
-    options.forEach((option, index) => {
-      option.textContent = question.options[index];
-      option.dataset.index = index;
-      option.removeEventListener('click', checkAnswer);
-      option.addEventListener('click', () => checkAnswer(option));
+    options.forEach(opt => {
+      opt.classList.remove('correct', 'wrong');
+      opt.style.pointerEvents = 'auto';
     });
-    document.getElementById('nextQuestionBtn').disabled = true;
+    
+    loadQuestion();
   }
 
   // Click Game
@@ -1007,20 +1072,24 @@
     clickScore = 0;
     clickGameActive = true;
     document.getElementById('clickScore').textContent = clickScore;
-    stopFloating();
+    document.getElementById('clickGameBtn').disabled = true;
+    
     const target = document.getElementById('clickTarget');
     target.style.display = 'block';
-    moveTarget();
+    
+    stopFloating();
+    moveClickTarget();
 
-    setTimeout(() => {
+    clickGameTimer = setTimeout(() => {
       clickGameActive = false;
       target.style.display = 'none';
+      document.getElementById('clickGameBtn').disabled = false;
       alert(`Game over! You scored ${clickScore} points! 🎉`);
       startFloating();
-    }, 15000);
+    }, 20000);
   }
 
-  function moveTarget() {
+  function moveClickTarget() {
     if (!clickGameActive) return;
 
     const target = document.getElementById('clickTarget');
@@ -1030,38 +1099,39 @@
 
     target.style.left = Math.random() * maxX + 'px';
     target.style.top = Math.random() * maxY + 'px';
-
-    target.onclick = () => {
-      if (clickGameActive) {
-        clickScore++;
-        document.getElementById('clickScore').textContent = clickScore;
-        stopFloating();
-        moveTarget();
-      }
-    };
-
-    setTimeout(moveTarget, 1000);
   }
+
+  document.getElementById('clickTarget').addEventListener('click', () => {
+    if (clickGameActive) {
+      clickScore++;
+      document.getElementById('clickScore').textContent = clickScore;
+      moveClickTarget();
+    }
+  });
 
   // Catch Game
   function startCatchGame() {
     catchScore = 0;
     catchGameActive = true;
     document.getElementById('catchScore').textContent = catchScore;
+    document.getElementById('catchGameBtn').disabled = true;
     document.getElementById('catchContainer').innerHTML = '';
+    
     stopFloating();
     spawnCatchCharacter();
 
-    setTimeout(() => {
+    catchGameTimer = setTimeout(() => {
       catchGameActive = false;
-      document.querySelectorAll('.catch-character').forEach(char => char.remove());
-      alert(`Game over! You caught ${catchScore} Chiikawas! 🍬`);
+      document.getElementById('catchContainer').innerHTML = '';
+      document.getElementById('catchGameBtn').disabled = false;
+      alert(`Game over! You caught ${catchScore} Chiikawas! 🍬🎉`);
       startFloating();
-    }, 15000);
+    }, 20000);
   }
 
   function spawnCatchCharacter() {
     if (!catchGameActive) return;
+    
     const container = document.getElementById('catchContainer');
     const character = document.createElement('div');
     character.className = 'catch-character';
@@ -1070,40 +1140,38 @@
     character.innerHTML = '<img src="https://i.pinimg.com/736x/28/de/fd/28defddafeefbe7e8b61c5799744c0a5.jpg" alt="chiikawa" />';
     container.appendChild(character);
 
-    character.animate([
+    const animation = character.animate([
       { transform: 'translateY(0)' },
       { transform: `translateY(${container.offsetHeight + 40}px)` }
     ], {
-      duration: 3000 + Math.random() * 2000,
+      duration: 2500 + Math.random() * 1500,
       easing: 'linear'
-    }).onfinish = () => character.remove();
+    });
+    
+    animation.onfinish = () => {
+      if (character.parentElement) {
+        character.remove();
+      }
+    };
 
     character.addEventListener('click', () => {
-      if (catchGameActive) {
+      if (catchGameActive && character.parentElement) {
         catchScore++;
         document.getElementById('catchScore').textContent = catchScore;
+        animation.cancel();
         character.remove();
       }
     });
 
-    setTimeout(spawnCatchCharacter, 1000);
+    if (catchGameActive) {
+      setTimeout(spawnCatchCharacter, 800);
+    }
   }
 
-  // Initialize games
+  // Initialize all games
   shuffleMemoryGame();
   startPuzzleGame();
-  document.getElementById('clickTarget').style.left = '50px';
-  document.getElementById('clickTarget').style.top = '50px';
-
-  // Initialize quiz with correct options
-  const initialQuestion = quizQuestions[0];
-  document.getElementById('quizQuestion').textContent = initialQuestion.question;
-  const quizOptions = document.querySelectorAll('.quiz-option');
-  quizOptions.forEach((option, index) => {
-    option.textContent = initialQuestion.options[index];
-    option.dataset.index = index;
-    option.addEventListener('click', () => checkAnswer(option));
-  });
+  loadQuestion();
 </script>
 </body>
 </html>
